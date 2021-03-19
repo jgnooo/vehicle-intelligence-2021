@@ -1,5 +1,7 @@
 from helper import norm_pdf
 
+import numpy as np
+
 # Initialize prior probabilities
 # taking into account that the vehicle is initially parked
 # around one of the landmarks and we do not know which.
@@ -47,6 +49,16 @@ def motion_model(position, mov, priors, map_size, stdev):
     # moving to the current position from that prior.
     # Multiply this probability to the prior probability of
     # the vehicle "was" at that prior position.
+    mu = mov
+    
+    probs = []
+    for i in range(map_size):
+        p_trans = norm_pdf(position - i, mov, stdev)
+        p_prior = priors[i]
+        p = p_trans * p_prior
+        probs.append(p)
+
+    position_prob = sum(probs)
     return position_prob
 
 # Observation model (assuming independent Gaussian)
@@ -64,6 +76,15 @@ def observation_model(landmarks, observations, pseudo_ranges, stdev):
     #     d: observation distance
     #     mu: expected mean distance, given by pseudo_ranges
     #     sig: squared standard deviation of measurement
+    if len(observations) == 0 or len(observations) > len(pseudo_ranges):
+        distance_prob = 0.0
+    else:
+        for i in range(len(observations)):
+            x_t = observations[i]
+            mu = pseudo_ranges[i]
+            p = norm_pdf(x_t, mu, stdev)
+            distance_prob *= p
+
     return distance_prob
 
 # Normalize a probability distribution so that the sum equals 1.0.

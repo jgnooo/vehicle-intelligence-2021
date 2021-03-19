@@ -94,7 +94,7 @@ if __name__ == '__main__':
                                   posteriors[pseudo_position])
             )
             '''
-
+            
         # Normalize the posterior probability distribution
         posteriors = normalize_distribution(posteriors)
 
