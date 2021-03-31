@@ -33,3 +33,34 @@ class KalmanFilter:
         # 6. Calculate new estimates
         #    x = x' + K * y
         #    P = (I - K * H_j) * P
+        
+        # 1. Compute Jacobian Matrix H_j
+        H_j = Jacobian(self.x)
+        
+        # 2. Calculate S = H_j * P' * H_j^T + R
+        S = np.dot(np.dot(H_j, self.P), H_j.T) + self.R
+
+
+        # 3. Calculate Kalman gain K = H_j * P' * Hj^T + R => P' H_j^T S^-1
+        K = np.dot(np.dot(self.P, H_j.T), np.linalg.inv(S))
+
+        # 4. Estimate y = z - h(x')
+        px, py, vx, vy = self.x
+        c1 = (px * px) + (py * py)
+        c2 = sqrt(c1)
+
+        rho = c2
+        phi = atan2(py, px)
+        rho_dot = (px * vx + py * vy) / c2
+        h_of_x = np.array([rho, phi, rho_dot])
+
+        y = z - h_of_x
+
+        # 5. Normalize phi so that it is between -PI and +PI
+        y[1] = 
+
+        # 6. Calculate new estimates
+        #    x = x' + K * y
+        #    P = (I - K * H_j) * P
+        self.x = self.x + np.dot(K, y)
+        self.P = self.P - no.dot(np.dot(K, H_j), self.P)
