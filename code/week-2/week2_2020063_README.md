@@ -50,4 +50,4 @@
 
 ### 실행 결과
 
-![week2](/Users/gno/Desktop/week2.gif)
+![week2](./week2.gif)
