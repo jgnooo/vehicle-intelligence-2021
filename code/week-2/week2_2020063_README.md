@@ -27,7 +27,7 @@
 
   - 각 timestamp 마다,
 
-    - $$p(x_t | x_{t-1}^{(i)}, u_t) = p_{trans} \times p_{prior}$$
+    - $p(x_t | x_{t-1}^{(i)}, u_t) = p_{trans} \times p_{prior}$
 
       ```python
       probs = []
@@ -38,7 +38,7 @@
         probs.append(p)
       ```
 
-      - $ p_{trans} $ : normal distribution
+      - $p_{trans}$ : normal distribution $p_{trans}$
 
       - $ p_{prior} $ : 직전 위치
 
