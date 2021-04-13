@@ -25,7 +25,28 @@
     return position_prob
   ```
 
-  
+  - 각 timestamp 마다,
+
+    - $p(x_t | x_{t-1}^{(i)}, u_t) = p_{trans} \times p_{prior}$
+
+      ```python
+      probs = []
+      for i in range(map_size):
+      	p_trans = norm_pdf(position - i, mov, stdev)
+        p_prior = priors[i]
+        p = p_trans * p_prior
+        probs.append(p)
+      ```
+
+      - $p_{trans}$ : normal distribution
+
+      - $p_{prior}$ : 직전 위치
+
+      - $p_{trans}$ 와 $p_{prior}$ 를 각각 계산하고 곱해서 probs list에 담아 모두 합함
+
+        - $\sum_{i} p(x_t | x_{t-1}^{(i)}, u_t) bel(x_{t-1}^{(i)})$
+
+          
 
 - observation_model( )
 
@@ -48,6 +69,36 @@
       return distance_prob
   ```
 
+  - 조건사항 :
+
+    - If we have no observations, we do not have any probability.
+
+    - Having more observations than the pseudo range indicates that this observation is not possible at all.
+
+      ```python
+      if len(observations) == 0 or len(observations) > len(pseudo_ranges):
+      	distance_prob = 0.0
+      ```
+
+  - 위의 조건을 통과한 경우, normal distribution 을 따르는 probability 계산
+
+    - the probability of this "observation" is the product of probability of observing each landmark at that distance, where that probability follows N(d, mu, sig) with
+
+      ​	d: observation distance 
+
+      ​	mu: expected mean distance, given by pseudo_ranges 
+
+      ​	sig: squared standard deviation of measurement
+
+      ```python
+      else:
+        for i in range(len(observations)):
+        	x_t = observations[i]
+        	mu = pseudo_ranges[i]
+        	p = norm_pdf(x_t, mu, stdev)
+        	distance_prob *= p
+      ```
+
 ### 실행 결과
 
-![week2](./week2.gif)
+![week2](week2.gif)
