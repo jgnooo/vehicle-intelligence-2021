@@ -27,39 +27,24 @@
 
   - 각 timestamp 마다, $p_{x_t}$
 
-<<<<<<< HEAD
-    ```python
-    probs = []
-    for i in range(map_size):
-    	p_trans = norm_pdf(position - i, mov, stdev)
-      p_prior = priors[i]
-      p = p_trans * p_prior
-      probs.append(p)
-    ```
+  ```python
+  probs = []
+  for i in range(map_size):
+  	p_trans = norm_pdf(position - i, mov, stdev)
+    p_prior = priors[i]
+    p = p_trans * p_prior
+    probs.append(p)
+  ```
 
-    - $ p_{trans} $ : normal distribution
-=======
-    - $p(x_t | x_{t-1}^{(i)}, u_t) = p_{trans} \times p_{prior}$
+  - $ p_{trans} $ : normal distribution
 
-      ```python
-      probs = []
-      for i in range(map_size):
-      	p_trans = norm_pdf(position - i, mov, stdev)
-        p_prior = priors[i]
-        p = p_trans * p_prior
-        probs.append(p)
-      ```
+  - $ p_{prior} $ : 직전 위치
 
-      - $p_{trans}$ : normal distribution $p_{trans}$
->>>>>>> 20f08d7be0421f6d2b7d1bae4de9b02e3e4a7f72
+  - $ p_{trans} $ 와 $ p_{prior} $ 를 각각 계산하고 곱해서 probs list에 담아 모두 합함
 
-    - $ p_{prior} $ : 직전 위치
+    - $ \sum_{i} p(x_t | x_{t-1}^{(i)}, u_t) bel(x_{t-1}^{(i)}) $
 
-    - $ p_{trans} $ 와 $ p_{prior} $ 를 각각 계산하고 곱해서 probs list에 담아 모두 합함
-
-      - $ \sum_{i} p(x_t | x_{t-1}^{(i)}, u_t) bel(x_{t-1}^{(i)}) $
-
-        
+      
 
 - observation_model( )
 
