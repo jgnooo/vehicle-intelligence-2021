@@ -25,7 +25,7 @@
             return position_prob
         ```
 
-    - 각 timestamp 마다, $p_{x_t}$
+    - 각 timestamp 마다, $p_x$
 
         ```python
         probs = []
@@ -44,6 +44,7 @@
             - $\sum_{i} p(x_t | x_{t-1}^{(i)}, u_t) bel(x_{t-1}^{(i)})$
 
       
+
 <!-- - observation_model( )
 
   - Given the `observations`, calculate the probability of this measurement being observed using `pseudo_ranges`.
