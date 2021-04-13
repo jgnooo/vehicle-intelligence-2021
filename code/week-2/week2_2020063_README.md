@@ -6,47 +6,45 @@
 
 - motion_model( )
 
-  - For each possible prior positions, calculate the probability that the vehicle will move to the position specified by `position` given as input.
-  - 구현 내용 :
+    - For each possible prior positions, calculate the probability that the vehicle will move to the position specified by `position` given as input.
+    - 구현 내용 :
 
-  ```python
-  def motion_model(position, mov, priors, map_size, stdev):
-  	position_prob = 0.0
-    mu = mov
-  
+    ```python
+    def motion_model(position, mov, priors, map_size, stdev):
+        position_prob = 0.0
+        mu = mov
+
+        probs = []
+        for i in range(map_size):
+            p_trans = norm_pdf(position - i, mov, stdev)
+            p_prior = priors[i]
+            p = p_trans * p_prior
+            probs.append(p)
+
+        position_prob = sum(probs)
+        return position_prob
+    ```
+
+    - 각 timestamp 마다, $p_{x_t}$
+
+    ```python
     probs = []
     for i in range(map_size):
         p_trans = norm_pdf(position - i, mov, stdev)
         p_prior = priors[i]
         p = p_trans * p_prior
         probs.append(p)
-  
+
     position_prob = sum(probs)
-    return position_prob
-  ```
+    ```
 
-  - 각 timestamp 마다, $p_{x_t}$
-
-  ```python
-  probs = []
-  for i in range(map_size):
-  	p_trans = norm_pdf(position - i, mov, stdev)
-    p_prior = priors[i]
-    p = p_trans * p_prior
-    probs.append(p)
-  ```
-
-  - $ p_{trans} $ : normal distribution
-
-  - $ p_{prior} $ : 직전 위치
-
-  - $ p_{trans} $ 와 $ p_{prior} $ 를 각각 계산하고 곱해서 probs list에 담아 모두 합함
-
-    - $ \sum_{i} p(x_t | x_{t-1}^{(i)}, u_t) bel(x_{t-1}^{(i)}) $
+    - $p_{trans}$ : normal distribution
+    - $p_{prior}$ : 직전 위치
+    - $p_{trans}$ 와 $p_{prior}$ 를 각각 계산하고 곱해서 probs list에 담아 모두 합함
+        - $\sum_{i} p(x_t | x_{t-1}^{(i)}, u_t) bel(x_{t-1}^{(i)})$
 
       
-
-- observation_model( )
+<!-- - observation_model( )
 
   - Given the `observations`, calculate the probability of this measurement being observed using `pseudo_ranges`.
   - 구현 내용 :
@@ -99,4 +97,4 @@
 
 ### 실행 결과
 
-![week2](week2.gif)
+![week2](week2.gif) -->
