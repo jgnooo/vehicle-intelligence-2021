@@ -25,7 +25,7 @@
             return position_prob
         ```
 
-    - 각 timestamp 마다, $p_x$
+    - 각 timestamp 마다, $p(x_t | x_{t-1}^{(i)}, u_t) = p_{trans} \times p_{prior}$
 
         ```python
         probs = []
@@ -45,8 +45,7 @@
 
       
 
-<!-- - observation_model( )
-
+- observation_model( )
   - Given the `observations`, calculate the probability of this measurement being observed using `pseudo_ranges`.
   - 구현 내용 :
 
@@ -81,11 +80,11 @@
 
     - the probability of this "observation" is the product of probability of observing each landmark at that distance, where that probability follows N(d, mu, sig) with
 
-      ​	d: observation distance 
+      - d : observation distance (x_t)
 
-      ​	mu: expected mean distance, given by pseudo_ranges 
+      - mu : expected mean distance, given by pseudo_ranges 
 
-      ​	sig: squared standard deviation of measurement
+      - sig : squared standard deviation of measurement (stdev)
 
       ```python
       else:
@@ -96,6 +95,18 @@
           distance_prob *= p
       ```
 
+      - pseudo range $p(z_t^k | x_t, m) ~ N(z_t^k ; z_t^{*k}, \sigma_{z_t}^2)$ 활용
+
+        ```python
+        mu = pseudo_ranges[i]
+        p = norm_pdf(x_t, mu, stdev)
+        ```
+
+      - observations 는 모두 independent 하다고 가정
+
+        - $\prod_{k=1}^K p(z_t^k | x_t, m)$
+
 ### 실행 결과
 
-![week2](week2.gif) -->
+![week2](week2.gif)
+
