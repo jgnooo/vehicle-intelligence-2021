@@ -59,12 +59,13 @@
         ```
 
         6. Calculate new estimates
-
+   - Update
+        
         ```python
         self.x = self.x + np.dot(K, y)
         self.P = self.P - np.dot(K, np.dot(H_j, self.P))
-        ```
-
+```
+        
         
 
 
