@@ -22,6 +22,11 @@
         ```
 
         - 2. Transform each observed landmark's coordinates from the particle's coordinate system to the map's coordinates.
+            - x_m = x_p + x_c * cos(theta) - y_c * sin(theta)
+            - y_m = y_p + x_c * sin(theta) + y_c * cos(theta)
+            - x_m, y_m : transformed x, y cooridnate
+            - x_c, y_c : observation x, y cooridnate
+            - x_p, y_p : map particle x, y cooridnate
 
         ```python
         transformed_obs = []
@@ -64,7 +69,34 @@
         ```python
         particle['w'] = weight
         ```
+- resample()
 
+    - Reconstruct the set of particles that capture the posterior belief distribution by drawing samples according to the weights.
+    - 구현 내용 :
+
+        - 1. Drawing particle samples according to their weights.
+        - 2. Make a copy of the particle; otherwise the duplicate particles will not behave independently from each other   
+        - they are references to mutable objects in Python.
+
+        ```python
+        weights = np.array([p['w'] for p in self.particles])
+        weights_sum = np.sum(weights)
+        resample_prob = weights / weights_sum
+        resample_idx = np.random.choice(self.num_particles, self.num_particles, p=resample_prob)
+
+        resampled_particles = []
+        for idx in resample_idx:
+            resampled_particles.append(copy.deepcopy(self.particles[idx]))
+
+        self.particles = resampled_particles
+        ```
+
+        - weights list 를 생성하여 numpy 1D array로 변환
+        - weights sum 을 계산
+        - `weights / weights_sum` 를 통해 resample index 를 계산하기 위한 probability 계산
+        - `np.random.choice` 를 이용해 위에서 계산한 probability 기준으로 random 한 index 생성
+        - random index 로 particles resampling
+   
 ### 실행 결과
 
 ![week2](week4_result.gif)
