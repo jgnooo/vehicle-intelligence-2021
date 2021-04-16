@@ -96,7 +96,7 @@
         - `weights / weights_sum` 를 통해 resample index 를 계산하기 위한 probability 계산
         - `np.random.choice` 를 이용해 위에서 계산한 probability 기준으로 random 한 index 생성
         - random index 로 particles resampling
-   
+
 ### 실행 결과
 
 ![week2](week4_result.gif)
