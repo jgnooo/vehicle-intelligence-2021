@@ -38,7 +38,7 @@
                                     'y': transformed_y})
         ```
 
-        - 3. . Associate each transformed observation to one of the predicted (selected in Step 1) landmark positions.   
+        - 3. Associate each transformed observation to one of the predicted (selected in Step 1) landmark positions.   
         Use self.associate() for this purpose - it receives the predicted landmarks and observations; and returns   
         the list of landmarks by implementing the nearest-neighbour association algorithm.
 
