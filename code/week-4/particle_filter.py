@@ -92,13 +92,59 @@ class ParticleFilter:
         #    The resulting probability is the product of probabilities
         #    for all the observations.
         # 5. Update the particle's weight by the calculated probability.
+        import math
 
-        pass
+        def multi_gaussian_distribution(trans_x, trans_y, assoc_x, assoc_y, std_landmark_x, std_landmark_y):
+            gauss_norm = 1. / (2. * np.pi * std_landmark_x * std_landmark_y)
+            expo_x = np.power((trans_x - assoc_x) / std_landmark_x, 2)
+            expo_y = np.power((trans_y - assoc_y) / std_landmark_y, 2)
+            exponent = expo_x + expo_y
+            gauss_distribution = gauss_norm * np.exp(-0.5 * exponent)
+            return gauss_distribution
+
+        for particle in self.particles:
+            predicted_landmarks = []    
+            for landmark_id in map_landmarks:
+                if distance(particle, map_landmarks[landmark_id]) < sensor_range:
+                    predicted_landmarks.append({'id': landmark_id,
+                                                'x': map_landmarks[landmark_id]['x'],
+                                                'y': map_landmarks[landmark_id]['y']})
+
+            if len(predicted_landmarks) == 0:
+                continue
+
+            transformed_obs = []
+            for obs in observations:
+                transformed_x = particle['x'] + math.cos(particle['t']) * obs['x'] - math.sin(particle['t']) * obs['y']
+                transformed_y = particle['y'] + math.sin(particle['t']) * obs['x'] + math.cos(particle['t']) * obs['y']
+
+                transformed_obs.append({'x': transformed_x,
+                                        'y': transformed_y})
+
+            associations = self.associate(predicted_landmarks, transformed_obs)
+
+            weight = 1.0
+            particle['w'] = 1.0
+            particle['assoc'] = []
+
+            for i in range(len(associations)):
+                transformed_x = transformed_obs[i]['x']
+                transformed_y = transformed_obs[i]['y']
+
+                assoc_x = associations[i]['x']
+                assoc_y = associations[i]['y']
+
+                weight *= multi_gaussian_distribution(transformed_x, transformed_y,
+                                                      assoc_x, assoc_y,
+                                                      std_landmark_x, std_landmark_y) + 1e-60
+
+                particle['assoc'].append(associations[i]['id'])
+            
+            particle['w'] = weight
 
     # Resample particles with replacement with probability proportional to
     #   their weights.
     def resample(self):
-        return
         # TODO: Select (possibly with duplicates) the set of particles
         #       that captures the posteior belief distribution, by
         # 1. Drawing particle samples according to their weights.
@@ -107,8 +153,18 @@ class ParticleFilter:
         #    references to mutable objects in Python.
         # Finally, self.particles shall contain the newly drawn set of
         #   particles.
+        import copy
 
-        pass
+        weights = np.array([p['w'] for p in self.particles])
+        weights_sum = np.sum(weights)
+        resample_prob = weights / weights_sum
+        resample_idx = np.random.choice(self.num_particles, self.num_particles, p=resample_prob)
+
+        resampled_particles = []
+        for idx in resample_idx:
+            resampled_particles.append(copy.deepcopy(self.particles[idx]))
+
+        self.particles = resampled_particles
 
     # Choose the particle with the highest weight (probability)
     def get_best_particle(self):
