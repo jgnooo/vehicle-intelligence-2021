@@ -20,8 +20,7 @@
             value[(t, y, x)] = 0
             change = True
         ```
-            - for 문에서 value가 유효한 값이고 (y, x) 가 목적지인 경우에 대한 설정   
-           
+        - for 문에서 value가 유효한 값이고 (y, x) 가 목적지인 경우에 대한 설정   
         2. Try to use simple arithmetic to capture state transitions.
         ```python
         elif grid[(y, x)] == 0:
@@ -42,12 +41,11 @@
                         policy[(t, y, x)] = act
                         change = True
         ```
-            - 목적지가 아닌 경우에 대한 구현
-            - 기존 방향을 이용해 새로운 방향 `ori`를 구함
-            - 현 position에서 `forward`의 값을 더하여 새로운 position `(_y, _x)` 결정
-            - position이 유효하다면 새로운 value `_v` 구함
-            - 기존 `value`와 `_v`를 비교해 `value`, `policy` 업데이트   
-           
+        - 목적지가 아닌 경우에 대한 구현
+        - 기존 방향을 이용해 새로운 방향 `ori`를 구함
+        - 현 position에서 `forward`의 값을 더하여 새로운 position `(_y, _x)` 결정
+        - position이 유효하다면 새로운 value `_v` 구함
+        - 기존 `value`와 `_v`를 비교해 `value`, `policy` 업데이트   
         3. Now navigate through the policy table to generate a sequence of actions to take to follow the optimal path.
         ```python
         # TODO: implement code.
@@ -78,9 +76,8 @@
 
             policy2D[(y, x)] = policy_act
         ```
-            - policy table을 이용하여 최적의 경로를 탐색하는 각 position에서의 action을 출력하는 구현
-            - `-999`를 만날 때까지 반복되며 목적지인 경우 * 를 출력   
-
+        - policy table을 이용하여 최적의 경로를 탐색하는 각 position에서의 action을 출력하는 구현
+        - `-999`를 만날 때까지 반복되며 목적지인 경우 * 를 출력   
 ### 실행 결과
 - 1. `cost = (2, 1, 20)`
     ![week5](week5_result1.png)
