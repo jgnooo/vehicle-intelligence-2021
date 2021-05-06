@@ -36,7 +36,7 @@ init = (4, 3, 0)    # Representing (y, x, o), where
                     # 3: right
                     # Note that this order corresponds to forward above.
 goal = (2, 0)
-cost = (5, 2, 20)   # Cost for each action (right, straight, left)
+cost = (2, 1, 20)   # Cost for each action (right, straight, left)
 
 # EXAMPLE OUTPUT:
 # calling optimum_policy_2D with the given parameters should return

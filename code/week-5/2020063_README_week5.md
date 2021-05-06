@@ -79,11 +79,5 @@
         - policy table을 이용하여 최적의 경로를 탐색하는 각 position에서의 action을 출력하는 구현
         - `-999`를 만날 때까지 반복되며 목적지인 경우 * 를 출력   
 ### 실행 결과
-- 1. `cost = (2, 1, 20)`
+- `cost = (2, 1, 20)`
     ![week5](week5_result1.png)
-   
-- 1. `cost = (1, 1, 2)`
-    ![week5](week5_result2.png)
-   
-- 1. `cost = (0, 0, 0)`
-    ![week5](week5_result3.png)
