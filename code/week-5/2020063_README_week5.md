@@ -12,7 +12,7 @@
         - Turn left and move forward
 
     - 구현 내용 :
-        - 1. Mark the final state with a special value that we will use in generating the final path policy.
+        1. Mark the final state with a special value that we will use in generating the final path policy.
         ```python
         if (y, x) == goal and value[(t, y, x)] > 0:
             # TODO: implement code.
@@ -22,7 +22,7 @@
         ```
         - for 문에서 value가 유효한 값이고 (y, x) 가 목적지인 경우에 대한 설정   
            
-        - 2. Try to use simple arithmetic to capture state transitions.
+        2. Try to use simple arithmetic to capture state transitions.
         ```python
         elif grid[(y, x)] == 0:
             # TODO: implement code.
@@ -48,7 +48,7 @@
         - position이 유효하다면 새로운 value `_v` 구함
         - 기존 `value`와 `_v`를 비교해 `value`, `policy` 업데이트   
            
-        - 3. Now navigate through the policy table to generate a sequence of actions to take to follow the optimal path.
+        3. Now navigate through the policy table to generate a sequence of actions to take to follow the optimal path.
         ```python
         # TODO: implement code.
         y, x, o = init
