@@ -36,7 +36,7 @@ init = (4, 3, 0)    # Representing (y, x, o), where
                     # 3: right
                     # Note that this order corresponds to forward above.
 goal = (2, 0)
-cost = (2, 1, 20)   # Cost for each action (right, straight, left)
+cost = (2, 1, 10)   # Cost for each action (right, straight, left)
 
 # EXAMPLE OUTPUT:
 # calling optimum_policy_2D with the given parameters should return
@@ -71,14 +71,58 @@ def optimum_policy_2D(grid, init, goal, cost):
             # use in generating the final path policy.
             if (y, x) == goal and value[(t, y, x)] > 0:
                 # TODO: implement code.
-                pass
+                policy[(t, y, x)] = -999
+                value[(t, y, x)] = 0
+                change = True
+
             # Try to use simple arithmetic to capture state transitions.
             elif grid[(y, x)] == 0:
                 # TODO: implement code.
-                pass
+                for i in range(len(action)):
+                    act = action[i]
+                    ori = (t + act) % 4
+                    _x = x + forward[ori][1]
+                    _y = y + forward[ori][0]
+
+                    if 0 <= _x < grid.shape[1] and \
+                       0 <= _y < grid.shape[0] and \
+                       grid[(_y, _x)] == 0:
+                       _v = value[(ori, _y, _x)] + cost[i]
+
+                       if _v < value[(t, y, x)]:
+                           value[(t, y, x)] = _v
+                           policy[(t, y, x)] = act
+                           change = True
+                
     # Now navigate through the policy table to generate a
     # sequence of actions to take to follow the optimal path.
     # TODO: implement code.
+    y, x, o = init
+    policy_star = policy[(o, y, x)]
+
+    if policy_star == action[0]: policy_star_act = action_name[0]
+    elif policy_star == action[1]: policy_star_act = action_name[1]
+    elif policy_star == action[2]: policy_star_act = action_name[2]
+    elif policy_star == -999: policy_star_act = '*'
+    
+    policy2D[(y, x)] = policy_star_act
+
+    while policy[(o, y, x)] != -999:
+        if policy[(o, y, x)] == action[0]: ori = (o - 1) % 4
+        elif policy[(o, y, x)] == action[1]: ori = o
+        elif policy[(o, y, x)] == action[2]: ori = (o - 1) % 4
+
+        x = x + forward[ori][1]
+        y = y + forward[ori][0]
+        o = ori
+
+        tmp = policy[(o, y, x)]
+        if tmp == action[0]: policy_act = action_name[0]
+        elif tmp == action[1]: policy_act = action_name[1]
+        elif tmp == action[2]: policy_act = action_name[2]
+        elif tmp == -999: policy_act = '*'
+
+        policy2D[(y, x)] = policy_act
 
     # Return the optimum policy generated above.
     return policy2D
