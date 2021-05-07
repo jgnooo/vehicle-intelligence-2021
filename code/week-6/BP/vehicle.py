@@ -55,13 +55,22 @@ class Vehicle(object):
 
         # TODO: implement state transition function based on the cost
         #       associated with each transition.
+        states = self.successor_states()
+
+        minmum_cost = 9999
+        optimal_traj = ''
+
+        for i in range(len(states)):
+            traj = self.generate_trajectory(states[i], predictions)
+            cost = calculate_cost(self, traj, predictions)
+
+            if cost < minmum_cost:
+                minmum_cost = cost
+                optimal_traj = traj
 
         # Note that the return value is a trajectory, where a trajectory
         # is a list of Vehicle objects with two elements.
-        return [
-            Vehicle(self.lane, self.s, self.v, self.a, self.state),
-            Vehicle(self.lane, self.position_at(1), self.v, 0, self.state)
-        ]
+        return optimal_traj
 
     def successor_states(self):
         '''

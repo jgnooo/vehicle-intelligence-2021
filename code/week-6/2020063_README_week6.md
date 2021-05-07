@@ -82,3 +82,66 @@ under the directory [./GNB](./GNB), you are given two Python modules:
 ![week6](week6_result.png)
 
 - Assignment #2
+- Task 1
+- 구현 내용 :
+    - choose_next_state() : Implement the transition function code for the vehicle's behaviour planning finite state machine, which operates based on the cost function (defined in a separate module 
+                            cost_functions.py).
+    ```python
+    def choose_next_state(self, predictions):
+        # TODO: implement state transition function based on the cost
+        #       associated with each transition.
+        states = self.successor_states()
+
+        minmum_cost = 9999
+        optimal_traj = ''
+
+        for i in range(len(states)):
+            traj = self.generate_trajectory(states[i], predictions)
+            cost = calculate_cost(self, traj, predictions)
+
+            if cost < minmum_cost:
+                minmum_cost = cost
+                optimal_traj = traj
+
+        # Note that the return value is a trajectory, where a trajectory
+        # is a list of Vehicle objects with two elements.
+        return optimal_traj
+    ```
+    - `states`, `predictions`로 trajectory 생성 후, cost 계산 및 최적 trajectory 출력
+    - `states` 는 `successor_stats()` 를 통하여 획득
+   
+- Task 2
+- 구현 내용 :
+    1. goal_distance_cost() : Cost increases based on distance of intended lane (for planning a lane change) and final lane of a trajectory. Cost of being out of goal lane also becomes larger as vehicle approaches the goal distance.
+    ```python
+    def goal_distance_cost(vehicle, trajectory, predictions, data):
+        distance = abs(data.end_distance_to_goal)
+        if distance:
+            cost = 1 - 2 * exp(-(abs(2.0 * vehicle.goal_lane - data.intended_lane - data.final_lane) / distance))
+        else:
+            cost = 1
+        return cost
+    ```
+    - trajectory 와 intended lane의 최종 차선에 따라 cost 증가
+    - `cost` 는 `vehicle.goal_lane`, `data.intended_lane`, `data.final_lane` 과 distance를 이용해 계산
+       
+    2. inefficiency_cost() : Cost becomes higher for trajectories with intended lane and final lane that have slower traffic.
+    ```python
+    def inefficiency_cost(vehicle, trajectory, predictions, data):
+        intended_speed = velocity(predictions, data.intended_lane) or vehicle.target_speed
+        final_speed = velocity(predictions, data.final_lane) or vehicle.target_speed
+
+        cost = float(2.0 * vehicle.target_speed - intended_speed - final_speed) / vehicle.target_speed
+        return cost
+    ```
+    - intended lane 과 느린 target lane 경우 cost 가 증가
+
+### 실행 결과
+- `REACH_GOAL = 0.5, EFFICIENCY = 0.5` -> Fail
+![week6](week6_task2_result1.png)
+
+- `REACH_GOAL = 0.8, EFFICIENCY = 0.2` -> Success
+![week6](week6_task2_result2.png)
+
+- `REACH_GOAL = 0.9, EFFICIENCY = 0.1` -> Success
+![week6](week6_task2_result3.png)
