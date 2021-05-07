@@ -86,3 +86,12 @@ You have to implement the following sections of code for the assignment:
 ### 실행 결과
 - `speed = 1.0, NUM_THETA_CELLS = 90`
     ![week7](week7_result1.png)
+   
+- `speed = 1.0, NUM_THETA_CELLS = 180`
+    ![week7](week7_result2.png)
+   
+- `speed = 1.0, NUM_THETA_CELLS = 270`
+    ![week7](week7_result2.png)
+   
+- `speed = 1.0, NUM_THETA_CELLS = 360`
+    ![week7](week7_result2.png)

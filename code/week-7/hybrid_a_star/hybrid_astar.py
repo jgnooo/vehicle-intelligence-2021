@@ -3,7 +3,7 @@ import math
 
 class HybridAStar:
     # Determine how many grid cells to have for theta-axis.
-    NUM_THETA_CELLS = 90
+    NUM_THETA_CELLS = 360
 
     # Define min, max, and resolution of steering angles
     omega_min = -35
